@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package proyectofinalestadisticaii;
-
+import logica.Factoriales;
 /**
  *
  * @author sebas
@@ -14,7 +14,9 @@ public class ProyectoFinalEstadisticaII {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Factoriales factoriales = new Factoriales();
+        
+        System.out.println(factoriales.factorial(5));
     }
     
 }
