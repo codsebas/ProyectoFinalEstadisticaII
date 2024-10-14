@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package vistas;
+import modelos.ModeloFactorial;
+import logica.Factoriales;
 
 /**
  *
@@ -15,6 +17,9 @@ public class VistaFactorial extends javax.swing.JFrame {
      */
     public VistaFactorial() {
         initComponents();
+        ModeloFactorial modelo = new ModeloFactorial(this);
+        Factoriales factoriales = new Factoriales(modelo);
+        setFactoriales(factoriales);
     }
 
     /**
@@ -27,27 +32,51 @@ public class VistaFactorial extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        btnCalcular = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtResultado = new javax.swing.JTextArea();
+        txtExpresion = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 36)); // NOI18N
         jLabel1.setText("Factorial");
 
+        btnCalcular.setText("calcular");
+
+        txtResultado.setColumns(20);
+        txtResultado.setRows(5);
+        jScrollPane1.setViewportView(txtResultado);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(177, 177, 177)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(175, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(166, 166, 166))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtExpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCalcular)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(49, 49, 49))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(14, 14, 14)
                 .addComponent(jLabel1)
-                .addContainerGap(277, Short.MAX_VALUE))
+                .addGap(33, 33, 33)
+                .addComponent(txtExpresion, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnCalcular)
+                .addGap(15, 15, 15))
         );
 
         pack();
@@ -87,8 +116,17 @@ public class VistaFactorial extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void setFactoriales(Factoriales factorial){
+        btnCalcular.addActionListener(factorial);
+        this.addWindowListener(factorial);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btnCalcular;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    public javax.swing.JTextField txtExpresion;
+    public javax.swing.JTextArea txtResultado;
     // End of variables declaration//GEN-END:variables
 }
