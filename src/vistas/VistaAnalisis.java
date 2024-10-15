@@ -15,6 +15,8 @@ public class VistaAnalisis extends javax.swing.JFrame {
      */
     public VistaAnalisis() {
         initComponents();
+         setTitle("Analisis");
+         setLocationRelativeTo(null);
     }
 
     /**
@@ -93,6 +95,11 @@ public class VistaAnalisis extends javax.swing.JFrame {
 
         btnResolver.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 18)); // NOI18N
         btnResolver.setText("Resolver");
+        btnResolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResolverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -151,6 +158,15 @@ public class VistaAnalisis extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResolverActionPerformed
+        try {
+            Inicio inicio = new Inicio ();
+            inicio.setVisible(true);
+            this.setVisible(false);
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btnResolverActionPerformed
 
     /**
      * @param args the command line arguments
