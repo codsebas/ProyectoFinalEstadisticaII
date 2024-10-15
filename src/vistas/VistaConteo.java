@@ -4,18 +4,102 @@
  */
 package vistas;
 
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import logica.Conteo;
+import modelos.ModeloConteo;
+
 /**
  *
  * @author javie
  */
 public class VistaConteo extends javax.swing.JFrame {
-
+    
+    
+    private ArrayList<JTextField> listaCampos;
+    private JButton botonAgregar, botonCalcular;
+   
+    private List<JTextField> campos;
+    private int contadorCampos = 0;
+    private ModeloConteo modeloConteo;
     /**
      * Creates new form VistaConteo
      */
     public VistaConteo() {
         initComponents();
+        modeloConteo = new ModeloConteo(this);
+        setTitle("Calculadora de Producto");
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
+        setVisible(true);// Usamos layout nulo para posicionamiento manual
+        listaCampos = new ArrayList<>(); 
+         
+          panelCampos.setLayout(new GridLayout(0,2,10,10));
+       
+          
+        agregarCampo();
+        agregarCampo();
+        
+       
+        
+        
     }
+   private void agregarCampo() {
+       
+       if(contadorCampos<10){
+        JTextField nuevoCampo = new JTextField(100);
+        nuevoCampo.setPreferredSize(new java.awt.Dimension(100, 10));
+        panelCampos.add(nuevoCampo);
+        listaCampos.add(nuevoCampo);
+        contadorCampos++;
+        panelCampos.revalidate();
+        panelCampos.repaint();
+       } else {
+         javax.swing.JOptionPane.showMessageDialog(this, "No se pueden agregar más de 10 campos.");
+
+       }
+        
+          
+    }
+   
+   private void calcularProducto(){
+   modeloConteo.limpiarValores(); 
+    boolean hayErrores = false;
+
+    for (JTextField campo : listaCampos) {
+        String texto = campo.getText();
+        try {
+           double valor = Double.parseDouble(texto);
+            modeloConteo.agregarValor(valor); 
+        } catch (NumberFormatException e) {
+            hayErrores = true;
+            System.out.println("Error de formato en el campo: "+texto);
+        }
+    }
+
+    if (hayErrores) {
+        JOptionPane.showMessageDialog(this, "Por favor, ingrese solo números.");
+    } else {
+        double producto = modeloConteo.calcularProducto(); // Usa el modelo para calcular el producto
+        resultadoLabel.setText("Resultado: " + producto);
+        System.out.println("Productoc calculado: " + producto);
+        
+       
+        resultadoLabel.revalidate();
+        resultadoLabel.repaint();
+        }
+   }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -29,21 +113,51 @@ public class VistaConteo extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         btnConteo = new javax.swing.JButton();
-        txtN = new javax.swing.JTextField();
-        txtM = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
+        btnAgregar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        panelCampos = new javax.swing.JPanel();
+        resultadoLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 36)); // NOI18N
         jLabel1.setText("Conteo");
 
-        jLabel2.setText("Sustituya los datos de la formaula siguiente : N X M");
+        jLabel2.setText("Sustituya los datos de la formula siguiente : N X M");
 
         btnConteo.setText("Resolver");
+        btnConteo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConteoActionPerformed(evt);
+            }
+        });
 
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("X");
+        btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Volver al Menú");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelCamposLayout = new javax.swing.GroupLayout(panelCampos);
+        panelCampos.setLayout(panelCamposLayout);
+        panelCamposLayout.setHorizontalGroup(
+            panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 419, Short.MAX_VALUE)
+        );
+        panelCamposLayout.setVerticalGroup(
+            panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 229, Short.MAX_VALUE)
+        );
+
+        resultadoLabel.setText("Resultado: ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -52,43 +166,69 @@ public class VistaConteo extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(180, 180, 180)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(92, 92, 92)
+                        .addComponent(panelCampos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(187, 187, 187)
-                        .addComponent(btnConteo))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGap(83, 83, 83)
-                            .addComponent(txtN, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtM, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGap(30, 30, 30)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(188, Short.MAX_VALUE))
+                        .addGap(150, 150, 150)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(21, 21, 21)))))
+                .addContainerGap(87, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(resultadoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnConteo)
+                        .addGap(142, 142, 142))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(233, 233, 233))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel1)
-                .addGap(31, 31, 31)
-                .addComponent(jLabel2)
+                .addGap(11, 11, 11)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addComponent(panelCampos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(64, 64, 64)
-                .addComponent(btnConteo)
-                .addContainerGap(145, Short.MAX_VALUE))
+                    .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnConteo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(resultadoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // TODO add your handling code here:
+        agregarCampo();
+        
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+       this.dispose();
+       Inicio volverMenu = new Inicio();
+       volverMenu.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnConteoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConteoActionPerformed
+        // TODO add your handling code here:
+        calcularProducto();
+    }//GEN-LAST:event_btnConteoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -126,11 +266,12 @@ public class VistaConteo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnConteo;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField txtM;
-    private javax.swing.JTextField txtN;
+    private javax.swing.JPanel panelCampos;
+    private javax.swing.JLabel resultadoLabel;
     // End of variables declaration//GEN-END:variables
 }
