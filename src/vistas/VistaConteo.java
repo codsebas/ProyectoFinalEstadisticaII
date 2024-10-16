@@ -14,7 +14,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import javax.swing.JButton;
@@ -302,27 +304,42 @@ public class VistaConteo extends javax.swing.JFrame {
 public void generar (String operacion) throws FileNotFoundException, DocumentException, IOException{
     
     if (!(resultadoLabel.getText().isEmpty())) {
-        
-    // Especifica la ruta de la carpeta de Descargas
+        // Especifica la ruta de la carpeta de Descargas con un nombre único
         String carpetaDescargas = System.getProperty("user.home") + File.separator + "Downloads";
-        String nombreArchivo = carpetaDescargas + File.separator + "semidios" + ".pdf";
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String timestamp = formatter.format(new Date());
+        String nombreArchivo = carpetaDescargas + File.separator + "semidios_" + timestamp + ".pdf";
 
         // Imprime la ruta del archivo para verificar
         System.out.println("Ruta del archivo PDF: " + nombreArchivo);
 
-        // Usar FileOutputStream para crear el archivo PDF
         FileOutputStream archivo = null; // Inicializa la variable
         try {
             archivo = new FileOutputStream(nombreArchivo); // Asigna el archivo
 
             Document documento = new Document();
+            
             PdfWriter.getInstance(documento, archivo);
             documento.open();
-        VistaAnalisis analisis = new VistaAnalisis ();
+            
+            formatter = new SimpleDateFormat("dd/MM/yyyy");
+            String currentDate = formatter.format(new Date());
+             Paragraph dateParagraph = new Paragraph("Fecha: " + currentDate);
+             dateParagraph.setAlignment(Paragraph.ALIGN_RIGHT);
+            documento.add(dateParagraph);
+            
+            VistaAnalisis analisis = new VistaAnalisis ();
         
             
             // Agrega contenido al PDF
-            documento.add(new Paragraph("Resolución del problema"));
+            
+            dateParagraph.setAlignment(Paragraph.ALIGN_RIGHT); // Alinear a la derecha
+            
+            Paragraph paragraph = new Paragraph("Resolución del problema");
+            paragraph.setAlignment(Paragraph.ALIGN_CENTER); // Centra el texto
+            paragraph.getFont().setSize(20); // Ajusta el tamaño de la letra a 20
+            documento.add(paragraph);
+            documento.add(new Paragraph(" "));
             documento.add(new Paragraph("Formula utilizada : n x m"));
             documento.add(new Paragraph ("descrpicion del problema"+ analisis.getDescripcionTexto()));
             StringBuilder procedimiento = new StringBuilder("Procedimiento del problema: ");
