@@ -8,9 +8,7 @@ import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
-import com.sun.istack.internal.logging.Logger;
 import java.awt.Desktop;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,15 +17,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
-import logica.Conteo;
+
 
 import modelos.ModeloConteo;
 
@@ -131,6 +125,7 @@ public class VistaConteo extends javax.swing.JFrame {
         resultadoLabel = new javax.swing.JLabel();
         btnGenerarPdf = new javax.swing.JButton();
         btnAbrirPdf = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -185,6 +180,13 @@ public class VistaConteo extends javax.swing.JFrame {
             }
         });
 
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -206,7 +208,9 @@ public class VistaConteo extends javax.swing.JFrame {
                         .addComponent(resultadoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnConteo)
-                        .addGap(142, 142, 142))
+                        .addGap(48, 48, 48)
+                        .addComponent(btnLimpiar)
+                        .addGap(19, 19, 19))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -233,7 +237,8 @@ public class VistaConteo extends javax.swing.JFrame {
                     .addComponent(resultadoLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnConteo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnConteo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnLimpiar)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -284,6 +289,16 @@ public class VistaConteo extends javax.swing.JFrame {
         else
             JOptionPane.showMessageDialog(null, "campo vaci0/ no se encuentra","Atencion",2);
     }//GEN-LAST:event_btnAbrirPdfActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+        
+        for(JTextField campo : listaCampos){
+               campo.setText("");
+        }
+         resultadoLabel.setText("");
+        
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 public void generar (String operacion) throws FileNotFoundException, DocumentException, IOException{
     
     if (!(resultadoLabel.getText().isEmpty())) {
@@ -394,6 +409,7 @@ public void abrir(String nombre) {
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnConteo;
     public javax.swing.JButton btnGenerarPdf;
+    private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

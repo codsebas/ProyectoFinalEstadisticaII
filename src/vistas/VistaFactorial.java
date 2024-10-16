@@ -104,6 +104,11 @@ public class VistaFactorial extends javax.swing.JFrame {
         jScrollPane2.setViewportView(txtResultado);
 
         btnAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/help_question_32.png"))); // NOI18N
+        btnAyuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAyudaActionPerformed(evt);
+            }
+        });
 
         btnCalcular.setText("calcular");
 
@@ -161,7 +166,7 @@ public class VistaFactorial extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelFactorialSimpleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelFactorialSimpleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCalcular)
                     .addComponent(btnLimpiar))
                 .addGap(86, 86, 86))
@@ -190,6 +195,10 @@ public class VistaFactorial extends javax.swing.JFrame {
     private void txtExpresionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtExpresionFocusGained
         // TODO add your handling code here:
     }//GEN-LAST:event_txtExpresionFocusGained
+
+    private void btnAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAyudaActionPerformed
 
     /**
      * @param args the command line arguments
