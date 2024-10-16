@@ -4,10 +4,21 @@
  */
 package vistas;
 
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfWriter;
+import com.sun.istack.internal.logging.Logger;
+import java.awt.Desktop;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -17,6 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import logica.Conteo;
+
 import modelos.ModeloConteo;
 
 /**
@@ -117,6 +129,8 @@ public class VistaConteo extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         panelCampos = new javax.swing.JPanel();
         resultadoLabel = new javax.swing.JLabel();
+        btnGenerarPdf = new javax.swing.JButton();
+        btnAbrirPdf = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -150,35 +164,42 @@ public class VistaConteo extends javax.swing.JFrame {
         panelCampos.setLayout(panelCamposLayout);
         panelCamposLayout.setHorizontalGroup(
             panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 419, Short.MAX_VALUE)
+            .addGap(0, 443, Short.MAX_VALUE)
         );
         panelCamposLayout.setVerticalGroup(
             panelCamposLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 229, Short.MAX_VALUE)
         );
 
-        resultadoLabel.setText("Resultado: ");
+        btnGenerarPdf.setText("Generar Pdf");
+        btnGenerarPdf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarPdfActionPerformed(evt);
+            }
+        });
+
+        btnAbrirPdf.setText("Abrir PDF");
+        btnAbrirPdf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAbrirPdfActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(150, 150, 150)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(92, 92, 92)
-                        .addComponent(panelCampos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(150, 150, 150)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(21, 21, 21)))))
-                .addContainerGap(87, Short.MAX_VALUE))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21)))
+                .addContainerGap(159, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -188,7 +209,15 @@ public class VistaConteo extends javax.swing.JFrame {
                         .addGap(142, 142, 142))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(233, 233, 233))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnGenerarPdf, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnAbrirPdf, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(140, 140, 140))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelCampos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(71, 71, 71))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -197,16 +226,22 @@ public class VistaConteo extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(panelCampos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnConteo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(resultadoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(resultadoLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnConteo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnGenerarPdf)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnAbrirPdf)))
+                .addGap(17, 17, 17))
         );
 
         pack();
@@ -229,6 +264,95 @@ public class VistaConteo extends javax.swing.JFrame {
         // TODO add your handling code here:
         calcularProducto();
     }//GEN-LAST:event_btnConteoActionPerformed
+
+    private void btnGenerarPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarPdfActionPerformed
+         try {
+            generar(resultadoLabel.getText());
+            
+        } catch (FileNotFoundException e) {
+            
+        } catch (DocumentException ex) {
+            java.util.logging.Logger.getLogger(VistaConteo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            java.util.logging.Logger.getLogger(VistaConteo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnGenerarPdfActionPerformed
+
+    private void btnAbrirPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirPdfActionPerformed
+        if(!resultadoLabel.getText().isEmpty())
+         abrir(resultadoLabel.getText());  
+        else
+            JOptionPane.showMessageDialog(null, "campo vaci0/ no se encuentra","Atencion",2);
+    }//GEN-LAST:event_btnAbrirPdfActionPerformed
+public void generar (String operacion) throws FileNotFoundException, DocumentException, IOException{
+    
+    if (!(resultadoLabel.getText().isEmpty())) {
+        
+    // Especifica la ruta de la carpeta de Descargas
+        String carpetaDescargas = System.getProperty("user.home") + File.separator + "Downloads";
+        String nombreArchivo = carpetaDescargas + File.separator + "semidios" + ".pdf";
+
+        // Imprime la ruta del archivo para verificar
+        System.out.println("Ruta del archivo PDF: " + nombreArchivo);
+
+        // Usar FileOutputStream para crear el archivo PDF
+        FileOutputStream archivo = null; // Inicializa la variable
+        try {
+            archivo = new FileOutputStream(nombreArchivo); // Asigna el archivo
+
+            Document documento = new Document();
+            PdfWriter.getInstance(documento, archivo);
+            documento.open();
+        VistaAnalisis analisis = new VistaAnalisis ();
+        
+            
+            // Agrega contenido al PDF
+            documento.add(new Paragraph("Resolución del problema"));
+            documento.add(new Paragraph("Formula utilizada : n x m"));
+            documento.add(new Paragraph ("descrpicion del problema"+ analisis.getDescripcionTexto()));
+            StringBuilder procedimiento = new StringBuilder("Procedimiento del problema: ");
+        for (JTextField campo : listaCampos) {
+            String textoCampo = campo.getText();
+            procedimiento.append(textoCampo).append(" * "); // Agregar texto de cada campo
+        }
+        // Eliminar la última coma y espacio si hay texto
+        if (procedimiento.length() > 0) {
+            procedimiento.setLength(procedimiento.length() - 2); // Eliminar última coma y espacio
+        }
+        documento.add(new Paragraph(procedimiento.toString()));
+            documento.add(new Paragraph("Resultado del problema: " + resultadoLabel.getText()));
+            documento.close();
+
+            // Mensaje de éxito
+            JOptionPane.showMessageDialog(null, "PDF creado de manera correcta en: " + nombreArchivo, "Información", JOptionPane.INFORMATION_MESSAGE);
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Error al crear el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (DocumentException e) {
+            JOptionPane.showMessageDialog(null, "Error al generar el documento PDF: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            // Asegúrate de cerrar el archivo
+            try {
+                if (archivo != null) {
+                    archivo.close();
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error al cerrar el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "Debe llenar el campo", "Atención", JOptionPane.WARNING_MESSAGE);
+    }
+        
+}
+public void abrir(String nombre) {
+    try {
+        File path = new File (nombre + ".pdf");
+        Desktop.getDesktop().open(path);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "campos","Atencion",2);
+    }
+   
+}
 
     /**
      * @param args the command line arguments
@@ -266,12 +390,14 @@ public class VistaConteo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAbrirPdf;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnConteo;
+    public javax.swing.JButton btnGenerarPdf;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel panelCampos;
+    public javax.swing.JPanel panelCampos;
     private javax.swing.JLabel resultadoLabel;
     // End of variables declaration//GEN-END:variables
 }

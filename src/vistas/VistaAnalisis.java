@@ -18,6 +18,7 @@ public class VistaAnalisis extends javax.swing.JFrame {
          setTitle("Analisis");
          setLocationRelativeTo(null);
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -163,11 +164,13 @@ public class VistaAnalisis extends javax.swing.JFrame {
         try {
             Inicio inicio = new Inicio ();
             inicio.setVisible(true);
-            this.setVisible(false);
+
         } catch (Exception e) {
         }
     }//GEN-LAST:event_btnResolverActionPerformed
-
+  public String getDescripcionTexto() {
+        return txtDescripcion.getText();
+    }
     /**
      * @param args the command line arguments
      */
