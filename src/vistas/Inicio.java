@@ -20,6 +20,8 @@ public class Inicio extends javax.swing.JFrame {
         initComponents();
          setTitle("Inicio");
          setLocationRelativeTo(null);
+         rsscalelabel.RSScaleLabel.setScaleLabel(jLabel2, "src/iconos/menuu.png");
+         rsscalelabel.RSScaleLabel.setScaleLabel(btns, "src/iconos/botonesconfac.png");
        
      
     }
@@ -35,13 +37,12 @@ public class Inicio extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        btnConteo = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        btns = new javax.swing.JLabel();
         btnFactorial = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        btnConteo = new javax.swing.JButton();
+        background = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         jPanel2.setForeground(new java.awt.Color(255, 255, 0));
 
@@ -60,21 +61,10 @@ public class Inicio extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnConteo.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 14)); // NOI18N
-        btnConteo.setText("Conteo (nxm)");
-        btnConteo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnConteo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConteoActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setFont(new java.awt.Font("Yu Gothic UI Semibold", 2, 24)); // NOI18N
-        jLabel3.setText("Conteo");
-
-        jLabel4.setFont(new java.awt.Font("Yu Gothic UI Semibold", 2, 24)); // NOI18N
-        jLabel4.setText("Factorial");
+        btns.setFont(new java.awt.Font("Yu Gothic UI Semibold", 2, 24)); // NOI18N
+        getContentPane().add(btns, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, 550, 110));
 
         btnFactorial.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 14)); // NOI18N
         btnFactorial.setText("Factorial (n!)");
@@ -84,67 +74,26 @@ public class Inicio extends javax.swing.JFrame {
                 btnFactorialActionPerformed(evt);
             }
         });
-
-        jLabel1.setFont(new java.awt.Font("Arial Black", 3, 24)); // NOI18N
-        jLabel1.setText("Bienvenido al Menu ");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(171, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(155, 155, 155))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabel1)
-                .addContainerGap(39, Short.MAX_VALUE))
-        );
+        getContentPane().add(btnFactorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 300, 170, 70));
 
         jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel2.setText("Ingrese que tipo de formula utilizara");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, 360, 180));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnConteo)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnFactorial)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(128, 128, 128))))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addGap(35, 35, 35)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnConteo)
-                    .addComponent(btnFactorial))
-                .addGap(53, 53, 53))
-        );
+        btnConteo.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 14)); // NOI18N
+        btnConteo.setText("Conteo (nxm)");
+        btnConteo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnConteo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConteoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnConteo, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 310, 170, 60));
+
+        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/Background.jpg"))); // NOI18N
+        getContentPane().add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 630, 440));
+
+        jLabel7.setText("jLabel7");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -206,14 +155,13 @@ public class Inicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel background;
     private javax.swing.JButton btnConteo;
     private javax.swing.JButton btnFactorial;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel btns;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }
