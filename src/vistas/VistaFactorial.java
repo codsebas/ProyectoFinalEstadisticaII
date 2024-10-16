@@ -48,6 +48,8 @@ public class VistaFactorial extends javax.swing.JFrame {
         txtExpresion2 = new javax.swing.JTextField();
         txtDivisor = new javax.swing.JLabel();
         txtDividendo = new javax.swing.JLabel();
+        btnRegresar = new javax.swing.JButton();
+        btnCambiar = new javax.swing.JButton();
 
         wdwMensaje.setTitle("Ayuda");
         wdwMensaje.setLocation(new java.awt.Point(0, 0));
@@ -118,11 +120,15 @@ public class VistaFactorial extends javax.swing.JFrame {
 
         txtDividendo.setText("Dividendo");
 
+        btnRegresar.setText("regresar");
+
+        btnCambiar.setText("cambiar resolución");
+
         javax.swing.GroupLayout panelFactorialSimpleLayout = new javax.swing.GroupLayout(panelFactorialSimple);
         panelFactorialSimple.setLayout(panelFactorialSimpleLayout);
         panelFactorialSimpleLayout.setHorizontalGroup(
             panelFactorialSimpleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFactorialSimpleLayout.createSequentialGroup()
+            .addGroup(panelFactorialSimpleLayout.createSequentialGroup()
                 .addContainerGap(90, Short.MAX_VALUE)
                 .addGroup(panelFactorialSimpleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFactorialSimpleLayout.createSequentialGroup()
@@ -133,7 +139,12 @@ public class VistaFactorial extends javax.swing.JFrame {
                         .addGap(175, 175, 175))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFactorialSimpleLayout.createSequentialGroup()
                         .addGroup(panelFactorialSimpleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnCalcular)
+                            .addGroup(panelFactorialSimpleLayout.createSequentialGroup()
+                                .addComponent(btnCambiar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnRegresar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCalcular))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(panelFactorialSimpleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFactorialSimpleLayout.createSequentialGroup()
@@ -144,9 +155,9 @@ public class VistaFactorial extends javax.swing.JFrame {
                                     .addComponent(txtDivisor)
                                     .addGap(47, 47, 47)
                                     .addComponent(txtExpresion2, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnLimpiar)
-                        .addGap(72, 72, 72))))
+                        .addGap(84, 84, 84))))
         );
         panelFactorialSimpleLayout.setVerticalGroup(
             panelFactorialSimpleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,9 +177,11 @@ public class VistaFactorial extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelFactorialSimpleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelFactorialSimpleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCalcular)
-                    .addComponent(btnLimpiar))
+                    .addComponent(btnRegresar)
+                    .addComponent(btnLimpiar)
+                    .addComponent(btnCambiar))
                 .addGap(86, 86, 86))
         );
 
@@ -238,13 +251,18 @@ public class VistaFactorial extends javax.swing.JFrame {
     public void setFactoriales(Factoriales factorial){
         btnCalcular.addActionListener(factorial);
         btnAyuda.addActionListener(factorial);
+        btnLimpiar.addActionListener(factorial);
+        btnCambiar.addActionListener(factorial);
+        btnRegresar.addActionListener(factorial);
         this.addWindowListener(factorial);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnAyuda;
     public javax.swing.JButton btnCalcular;
-    private javax.swing.JButton btnLimpiar;
+    public javax.swing.JButton btnCambiar;
+    public javax.swing.JButton btnLimpiar;
+    public javax.swing.JButton btnRegresar;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
