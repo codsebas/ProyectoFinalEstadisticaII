@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 
 
 import modelos.ModeloConteo;
+import static vistas.VistaAnalisis.txtDescripcion;
 
 /**
  *
@@ -333,6 +334,7 @@ public void generar (String operacion) throws FileNotFoundException, DocumentExc
 
         // Espera a que el usuario ingrese la descripción y la confirme, por ejemplo, al presionar un botón
       String descripcion = analisis.getDescripcionTexto();
+            System.out.println(descripcion);
         
             
             // Agrega contenido al PDF
@@ -344,8 +346,8 @@ public void generar (String operacion) throws FileNotFoundException, DocumentExc
             paragraph.getFont().setSize(20); // Ajusta el tamaño de la letra a 20
             documento.add(paragraph);
             documento.add(new Paragraph(" "));
-            documento.add(new Paragraph("Formula utilizada : n x m"));
-            documento.add(new Paragraph ("descrpicion del problema"+ descripcion));
+            documento.add(new Paragraph("Formula utilizada : n x m"));  
+            documento.add(new Paragraph ("descrpicion del problema"+ VistaAnalisis.descripcion));
             StringBuilder procedimiento = new StringBuilder("Procedimiento del problema: ");
         for (JTextField campo : listaCampos) {
             String textoCampo = campo.getText();

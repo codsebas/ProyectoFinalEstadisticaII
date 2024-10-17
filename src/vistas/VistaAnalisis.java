@@ -13,12 +13,13 @@ public class VistaAnalisis extends javax.swing.JFrame {
     /**
      * Creates new form VistaAnalisis
      */
+    public static String descripcion;
     public VistaAnalisis() {
         initComponents();
-         setTitle("Analisis");
-         setLocationRelativeTo(null);
+        setTitle("Analisis");
+        setLocationRelativeTo(null);
+        
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -75,7 +76,6 @@ public class VistaAnalisis extends javax.swing.JFrame {
 
         txtDescripcion.setColumns(20);
         txtDescripcion.setRows(5);
-        txtDescripcion.setText("a");
         jScrollPane1.setViewportView(txtDescripcion);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -162,18 +162,15 @@ public class VistaAnalisis extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResolverActionPerformed
-        try {
-            Inicio inicio = new Inicio ();
-            inicio.setVisible(true);
-         String descripcion = getDescripcionTexto ();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.setVisible(false);
+        Inicio inicio = new Inicio();
+        inicio.setVisible(true);    
+        VistaAnalisis.descripcion = txtDescripcion.getText();
     }//GEN-LAST:event_btnResolverActionPerformed
-  public String getDescripcionTexto() {
+    public static String getDescripcionTexto() {
         return txtDescripcion.getText();
     }
-  
+
     /**
      * @param args the command line arguments
      */
@@ -218,8 +215,7 @@ public class VistaAnalisis extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JTextArea txtDescripcion;
+    public static javax.swing.JTextArea txtDescripcion;
     // End of variables declaration//GEN-END:variables
 
-    
 }

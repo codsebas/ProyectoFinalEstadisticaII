@@ -16,7 +16,7 @@ import vistas.Inicio;
 public class Factoriales implements ActionListener, WindowListener, FocusListener {
 
     ModeloFactorial modelo;
-    int tipoFactorial;
+    public static int tipoFactorial;
 
     public Factoriales(ModeloFactorial modelo) {
         this.modelo = modelo;
@@ -137,6 +137,15 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
         } else if (e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand()) && tipoFactorial == 4) {
         } else if (e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand()) && tipoFactorial == 5) {
             modelo.getVista().txtResultado.setText(String.valueOf(factorial(Integer.parseInt(modelo.getVista().txtExpresion.getText()))));
+            
+            //PARTE DE JAVIFA DEL REPORTE UWU
+        } else if(e.getActionCommand().equals(modelo.getVista().btnGenerarPDF.getActionCommand())){
+            if(modelo.getVista().txtResultado.equals("")){
+                JOptionPane.showMessageDialog(null, "NO SIRVE TU MIERDA", "ERROR", 2);
+            } else {
+                JOptionPane.showMessageDialog(null, "SI SIRVE TU MIERDA", "RAWRAWRARW", 2);
+                //LLAMAS TU METODO
+            }
         }
     }
 

@@ -50,6 +50,7 @@ public class VistaFactorial extends javax.swing.JFrame {
         txtDividendo = new javax.swing.JLabel();
         btnRegresar = new javax.swing.JButton();
         btnCambiar = new javax.swing.JButton();
+        btnGenerarPDF = new javax.swing.JButton();
 
         wdwMensaje.setTitle("Ayuda");
         wdwMensaje.setLocation(new java.awt.Point(0, 0));
@@ -124,6 +125,8 @@ public class VistaFactorial extends javax.swing.JFrame {
 
         btnCambiar.setText("cambiar resolución");
 
+        btnGenerarPDF.setText("Generar reporte");
+
         javax.swing.GroupLayout panelFactorialSimpleLayout = new javax.swing.GroupLayout(panelFactorialSimple);
         panelFactorialSimple.setLayout(panelFactorialSimpleLayout);
         panelFactorialSimpleLayout.setHorizontalGroup(
@@ -158,6 +161,10 @@ public class VistaFactorial extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnLimpiar)
                         .addGap(84, 84, 84))))
+            .addGroup(panelFactorialSimpleLayout.createSequentialGroup()
+                .addGap(244, 244, 244)
+                .addComponent(btnGenerarPDF)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         panelFactorialSimpleLayout.setVerticalGroup(
             panelFactorialSimpleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,7 +189,9 @@ public class VistaFactorial extends javax.swing.JFrame {
                     .addComponent(btnRegresar)
                     .addComponent(btnLimpiar)
                     .addComponent(btnCambiar))
-                .addGap(86, 86, 86))
+                .addGap(18, 18, 18)
+                .addComponent(btnGenerarPDF)
+                .addGap(45, 45, 45))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -254,6 +263,7 @@ public class VistaFactorial extends javax.swing.JFrame {
         btnLimpiar.addActionListener(factorial);
         btnCambiar.addActionListener(factorial);
         btnRegresar.addActionListener(factorial);
+        btnGenerarPDF.addActionListener(factorial);
         this.addWindowListener(factorial);
     }
 
@@ -261,6 +271,7 @@ public class VistaFactorial extends javax.swing.JFrame {
     public javax.swing.JButton btnAyuda;
     public javax.swing.JButton btnCalcular;
     public javax.swing.JButton btnCambiar;
+    public javax.swing.JButton btnGenerarPDF;
     public javax.swing.JButton btnLimpiar;
     public javax.swing.JButton btnRegresar;
     private javax.swing.JLabel jLabel2;
