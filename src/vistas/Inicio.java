@@ -23,7 +23,9 @@ public class Inicio extends javax.swing.JFrame {
          rsscalelabel.RSScaleLabel.setScaleLabel(jLabel2, "src/iconos/menuu.png");
          rsscalelabel.RSScaleLabel.setScaleLabel(btns, "src/iconos/botonesconfac.png");
        
-     
+        btnConteo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnFactorial.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        
     }
 
     /**
@@ -104,7 +106,11 @@ public class Inicio extends javax.swing.JFrame {
             factorial.setVisible(true);
             this.setVisible(false);
         } catch (Exception e) {
-
+            
+             e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(this, "Error al abrir la ventana Factorial: " + e.getMessage());
+        e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(this, "Error al abrir la ventana Conteo: " + e.getMessage());
         }
 
     }//GEN-LAST:event_btnFactorialActionPerformed
