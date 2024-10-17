@@ -6,6 +6,8 @@ package vistas;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
+import com.lowagie.text.FontFactory;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
 import java.awt.Desktop;
@@ -24,7 +26,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-
 import modelos.ModeloConteo;
 import static vistas.VistaAnalisis.txtDescripcion;
 
@@ -33,14 +34,14 @@ import static vistas.VistaAnalisis.txtDescripcion;
  * @author javie
  */
 public class VistaConteo extends javax.swing.JFrame {
-    
-    
+
     private ArrayList<JTextField> listaCampos;
     private JButton botonAgregar, botonCalcular;
-   
+
     private List<JTextField> campos;
     private int contadorCampos = 0;
     private ModeloConteo modeloConteo;
+
     /**
      * Creates new form VistaConteo
      */
@@ -52,63 +53,58 @@ public class VistaConteo extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         setVisible(true);// Usamos layout nulo para posicionamiento manual
-        listaCampos = new ArrayList<>(); 
-         
-          panelCampos.setLayout(new GridLayout(0,2,10,10));
-       
-          
+        listaCampos = new ArrayList<>();
+
+        panelCampos.setLayout(new GridLayout(0, 2, 10, 10));
+
         agregarCampo();
         agregarCampo();
-        
-       
-        
-        
-    }
-   private void agregarCampo() {
-       
-       if(contadorCampos<10){
-        JTextField nuevoCampo = new JTextField(100);
-        nuevoCampo.setPreferredSize(new java.awt.Dimension(100, 10));
-        panelCampos.add(nuevoCampo);
-        listaCampos.add(nuevoCampo);
-        contadorCampos++;
-        panelCampos.revalidate();
-        panelCampos.repaint();
-       } else {
-         javax.swing.JOptionPane.showMessageDialog(this, "No se pueden agregar más de 10 campos.");
 
-       }
-        
-          
     }
-   
-   private void calcularProducto(){
-   modeloConteo.limpiarValores(); 
-    boolean hayErrores = false;
 
-    for (JTextField campo : listaCampos) {
-        String texto = campo.getText();
-        try {
-           double valor = Double.parseDouble(texto);
-            modeloConteo.agregarValor(valor); 
-        } catch (NumberFormatException e) {
-            hayErrores = true;
-            System.out.println("Error de formato en el campo: "+texto);
+    private void agregarCampo() {
+
+        if (contadorCampos < 10) {
+            JTextField nuevoCampo = new JTextField(100);
+            nuevoCampo.setPreferredSize(new java.awt.Dimension(100, 10));
+            panelCampos.add(nuevoCampo);
+            listaCampos.add(nuevoCampo);
+            contadorCampos++;
+            panelCampos.revalidate();
+            panelCampos.repaint();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "No se pueden agregar más de 10 campos.");
+
+        }
+
+    }
+
+    private void calcularProducto() {
+        modeloConteo.limpiarValores();
+        boolean hayErrores = false;
+
+        for (JTextField campo : listaCampos) {
+            String texto = campo.getText();
+            try {
+                double valor = Double.parseDouble(texto);
+                modeloConteo.agregarValor(valor);
+            } catch (NumberFormatException e) {
+                hayErrores = true;
+                System.out.println("Error de formato en el campo: " + texto);
+            }
+        }
+
+        if (hayErrores) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese solo números.");
+        } else {
+            double producto = modeloConteo.calcularProducto(); // Usa el modelo para calcular el producto
+            resultadoLabel.setText("Resultado: " + producto);
+            System.out.println("Productoc calculado: " + producto);
+
+            resultadoLabel.revalidate();
+            resultadoLabel.repaint();
         }
     }
-
-    if (hayErrores) {
-        JOptionPane.showMessageDialog(this, "Por favor, ingrese solo números.");
-    } else {
-        double producto = modeloConteo.calcularProducto(); // Usa el modelo para calcular el producto
-        resultadoLabel.setText("Resultado: " + producto);
-        System.out.println("Productoc calculado: " + producto);
-        
-       
-        resultadoLabel.revalidate();
-        resultadoLabel.repaint();
-        }
-   }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -127,7 +123,6 @@ public class VistaConteo extends javax.swing.JFrame {
         panelCampos = new javax.swing.JPanel();
         resultadoLabel = new javax.swing.JLabel();
         btnGenerarPdf = new javax.swing.JButton();
-        btnAbrirPdf = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -176,13 +171,6 @@ public class VistaConteo extends javax.swing.JFrame {
             }
         });
 
-        btnAbrirPdf.setText("Abrir PDF");
-        btnAbrirPdf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAbrirPdfActionPerformed(evt);
-            }
-        });
-
         btnLimpiar.setText("Limpiar");
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -217,9 +205,7 @@ public class VistaConteo extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnGenerarPdf, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnAbrirPdf, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addComponent(btnGenerarPdf)
                         .addGap(140, 140, 140))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -245,11 +231,8 @@ public class VistaConteo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnGenerarPdf)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAbrirPdf)))
-                .addGap(17, 17, 17))
+                    .addComponent(btnGenerarPdf))
+                .addGap(36, 36, 36))
         );
 
         pack();
@@ -258,14 +241,14 @@ public class VistaConteo extends javax.swing.JFrame {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
         agregarCampo();
-        
+
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-       this.dispose();
-       Inicio volverMenu = new Inicio();
-       volverMenu.setVisible(true);
+        this.dispose();
+        Inicio volverMenu = new Inicio();
+        volverMenu.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnConteoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConteoActionPerformed
@@ -274,11 +257,11 @@ public class VistaConteo extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConteoActionPerformed
 
     private void btnGenerarPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarPdfActionPerformed
-         try {
+        try {
             generar(resultadoLabel.getText());
-            
+
         } catch (FileNotFoundException e) {
-            
+
         } catch (DocumentException ex) {
             java.util.logging.Logger.getLogger(VistaConteo.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -286,111 +269,107 @@ public class VistaConteo extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnGenerarPdfActionPerformed
 
-    private void btnAbrirPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirPdfActionPerformed
-        if(!resultadoLabel.getText().isEmpty())
-         abrir(resultadoLabel.getText());  
-        else
-            JOptionPane.showMessageDialog(null, "campo vaci0/ no se encuentra","Atencion",2);
-    }//GEN-LAST:event_btnAbrirPdfActionPerformed
-
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         // TODO add your handling code here:
-        
-        for(JTextField campo : listaCampos){
-               campo.setText("");
-        }
-         resultadoLabel.setText("");
-        
-    }//GEN-LAST:event_btnLimpiarActionPerformed
-public void generar (String operacion) throws FileNotFoundException, DocumentException, IOException{
-    
-    if (!(resultadoLabel.getText().isEmpty())) {
-        // Especifica la ruta de la carpeta de Descargas con un nombre único
-        String carpetaDescargas = System.getProperty("user.home") + File.separator + "Downloads";
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HHmmss");
-        String timestamp = formatter.format(new Date());
-        String nombreArchivo = carpetaDescargas + File.separator + "semidios_" + timestamp + ".pdf";
 
-        // Imprime la ruta del archivo para verificar
-        System.out.println("Ruta del archivo PDF: " + nombreArchivo);
-
-        FileOutputStream archivo = null; // Inicializa la variable
-        try {
-            archivo = new FileOutputStream(nombreArchivo); // Asigna el archivo
-
-            Document documento = new Document();
-            
-            PdfWriter.getInstance(documento, archivo);
-            documento.open();
-            
-            formatter = new SimpleDateFormat("dd/MM/yyyy");
-            String currentDate = formatter.format(new Date());
-             Paragraph dateParagraph = new Paragraph("Fecha: " + currentDate);
-             dateParagraph.setAlignment(Paragraph.ALIGN_RIGHT);
-            documento.add(dateParagraph);
-            
-            VistaAnalisis analisis = new VistaAnalisis();
-        
-
-        // Espera a que el usuario ingrese la descripción y la confirme, por ejemplo, al presionar un botón
-      String descripcion = analisis.getDescripcionTexto();
-            System.out.println(descripcion);
-        
-            
-            // Agrega contenido al PDF
-            
-            dateParagraph.setAlignment(Paragraph.ALIGN_RIGHT); // Alinear a la derecha
-            
-            Paragraph paragraph = new Paragraph("Resolución del problema");
-            paragraph.setAlignment(Paragraph.ALIGN_CENTER); // Centra el texto
-            paragraph.getFont().setSize(20); // Ajusta el tamaño de la letra a 20
-            documento.add(paragraph);
-            documento.add(new Paragraph(" "));
-            documento.add(new Paragraph("Formula utilizada : n x m"));  
-            documento.add(new Paragraph ("descrpicion del problema"+ VistaAnalisis.descripcion));
-            StringBuilder procedimiento = new StringBuilder("Procedimiento del problema: ");
         for (JTextField campo : listaCampos) {
-            String textoCampo = campo.getText();
-            procedimiento.append(textoCampo).append(" * "); // Agregar texto de cada campo
+            campo.setText("");
         }
-        // Eliminar la última coma y espacio si hay texto
-        if (procedimiento.length() > 0) {
-            procedimiento.setLength(procedimiento.length() - 2); // Eliminar última coma y espacio
-        }
-        documento.add(new Paragraph(procedimiento.toString()));
-            documento.add(new Paragraph("Resultado del problema: " + resultadoLabel.getText()));
-            documento.close();
+        resultadoLabel.setText("");
 
-            // Mensaje de éxito
-            JOptionPane.showMessageDialog(null, "PDF creado de manera correcta en: " + nombreArchivo, "Información", JOptionPane.INFORMATION_MESSAGE);
-        } catch (FileNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "Error al crear el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (DocumentException e) {
-            JOptionPane.showMessageDialog(null, "Error al generar el documento PDF: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            // Asegúrate de cerrar el archivo
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+    public void generar(String operacion) throws FileNotFoundException, DocumentException, IOException {
+
+        if (!(resultadoLabel.getText().isEmpty())) {
+            // Especifica la ruta de la carpeta de Descargas con un nombre único
+            String carpetaDescargas = System.getProperty("user.home") + File.separator + "Downloads";
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HHmmss");
+            String timestamp = formatter.format(new Date());
+            String nombreArchivo = carpetaDescargas + File.separator + "semidios_" + timestamp + ".pdf";
+
+            // Imprime la ruta del archivo para verificar
+            System.out.println("Ruta del archivo PDF: " + nombreArchivo);
+
+            FileOutputStream archivo = null; // Inicializa la variable
             try {
-                if (archivo != null) {
-                    archivo.close();
+                archivo = new FileOutputStream(nombreArchivo); // Asigna el archivo
+
+                Document documento = new Document();
+
+                PdfWriter.getInstance(documento, archivo);
+                documento.open();
+
+                formatter = new SimpleDateFormat("dd/MM/yyyy");
+                String currentDate = formatter.format(new Date());
+                Paragraph dateParagraph = new Paragraph("Fecha: " + currentDate);
+                dateParagraph.setAlignment(Paragraph.ALIGN_RIGHT);
+                documento.add(dateParagraph);
+
+                VistaAnalisis analisis = new VistaAnalisis();
+
+                // Espera a que el usuario ingrese la descripción y la confirme, por ejemplo, al presionar un botón
+                String descripcion = analisis.getDescripcionTexto();
+                System.out.println(descripcion);
+
+                // Agrega contenido al PDF
+                dateParagraph.setAlignment(Paragraph.ALIGN_RIGHT); // Alinear a la derecha
+
+                com.lowagie.text.Font tituloFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16);
+                // Crear el párrafo con la fuente personalizada
+                Paragraph titulo = new Paragraph("Resolución del problema : ", tituloFont);
+                // Centrar el párrafo
+                titulo.setAlignment(Element.ALIGN_CENTER);
+                // Agregar el párrafo al documento
+                documento.add(titulo);
+
+                documento.add(new Paragraph(" "));
+
+                documento.add(new Paragraph("descrpicion del problema" + VistaAnalisis.descripcion));
+                documento.add(new Paragraph("Sustitucion de formula : n x m = "));
+                StringBuilder procedimiento = new StringBuilder("Procedimiento del problema: ");
+                for (JTextField campo : listaCampos) {
+                    String textoCampo = campo.getText();
+                    procedimiento.append(textoCampo).append(" * "); // Agregar texto de cada campo
                 }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Error al cerrar el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                // Eliminar la última coma y espacio si hay texto
+                if (procedimiento.length() > 0) {
+                    procedimiento.setLength(procedimiento.length() - 2); // Eliminar última coma y espacio
+                }
+                documento.add(new Paragraph(procedimiento.toString()));
+                documento.add(new Paragraph("Resultado del problema: " + resultadoLabel.getText()));
+                documento.close();
+
+                // Mensaje de éxito
+                JOptionPane.showMessageDialog(null, "PDF creado de manera correcta en: " + nombreArchivo, "Información", JOptionPane.INFORMATION_MESSAGE);
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Error al crear el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (DocumentException e) {
+                JOptionPane.showMessageDialog(null, "Error al generar el documento PDF: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                // Asegúrate de cerrar el archivo
+                try {
+                    if (archivo != null) {
+                        archivo.close();
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Error al cerrar el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe llenar el campo", "Atención", JOptionPane.WARNING_MESSAGE);
         }
-    } else {
-        JOptionPane.showMessageDialog(null, "Debe llenar el campo", "Atención", JOptionPane.WARNING_MESSAGE);
+
     }
-        
-}
-public void abrir(String nombre) {
-    try {
-        File path = new File (nombre + ".pdf");
-        Desktop.getDesktop().open(path);
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "campos","Atencion",2);
+
+    public void abrir(String nombre) {
+        try {
+            File path = new File(nombre + ".pdf");
+            Desktop.getDesktop().open(path);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "campos", "Atencion", 2);
+        }
+
     }
-   
-}
 
     /**
      * @param args the command line arguments
@@ -428,7 +407,6 @@ public void abrir(String nombre) {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAbrirPdf;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnConteo;
     public javax.swing.JButton btnGenerarPdf;
