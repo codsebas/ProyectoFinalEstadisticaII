@@ -328,7 +328,11 @@ public void generar (String operacion) throws FileNotFoundException, DocumentExc
              dateParagraph.setAlignment(Paragraph.ALIGN_RIGHT);
             documento.add(dateParagraph);
             
-            VistaAnalisis analisis = new VistaAnalisis ();
+            VistaAnalisis analisis = new VistaAnalisis();
+        
+
+        // Espera a que el usuario ingrese la descripción y la confirme, por ejemplo, al presionar un botón
+      String descripcion = analisis.getDescripcionTexto();
         
             
             // Agrega contenido al PDF
@@ -341,7 +345,7 @@ public void generar (String operacion) throws FileNotFoundException, DocumentExc
             documento.add(paragraph);
             documento.add(new Paragraph(" "));
             documento.add(new Paragraph("Formula utilizada : n x m"));
-            documento.add(new Paragraph ("descrpicion del problema"+ analisis.getDescripcionTexto()));
+            documento.add(new Paragraph ("descrpicion del problema"+ descripcion));
             StringBuilder procedimiento = new StringBuilder("Procedimiento del problema: ");
         for (JTextField campo : listaCampos) {
             String textoCampo = campo.getText();

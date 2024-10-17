@@ -75,6 +75,7 @@ public class VistaAnalisis extends javax.swing.JFrame {
 
         txtDescripcion.setColumns(20);
         txtDescripcion.setRows(5);
+        txtDescripcion.setText("a");
         jScrollPane1.setViewportView(txtDescripcion);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -164,13 +165,15 @@ public class VistaAnalisis extends javax.swing.JFrame {
         try {
             Inicio inicio = new Inicio ();
             inicio.setVisible(true);
-
+         String descripcion = getDescripcionTexto ();
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }//GEN-LAST:event_btnResolverActionPerformed
   public String getDescripcionTexto() {
         return txtDescripcion.getText();
     }
+  
     /**
      * @param args the command line arguments
      */
@@ -207,7 +210,7 @@ public class VistaAnalisis extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnResolver;
+    public javax.swing.JButton btnResolver;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -215,6 +218,8 @@ public class VistaAnalisis extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea txtDescripcion;
+    public javax.swing.JTextArea txtDescripcion;
     // End of variables declaration//GEN-END:variables
+
+    
 }
