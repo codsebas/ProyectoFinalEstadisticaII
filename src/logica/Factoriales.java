@@ -134,10 +134,12 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
         if (n != 1) {
             modelo.getVista().txtExpresion.setText("");
             modelo.getVista().txtResultado.setText("");
+            modelo.getVista().txtObservaciones.setText("");
             if (modelo.getVista().txtExpresion2.isVisible()) {
                 modelo.getVista().txtExpresion2.setText("");
             }
         } else {
+            modelo.getVista().txtObservaciones.setText("");
             modelo.getVista().txtExpresion.setText("");
             modelo.getVista().txtResultado.setText("");
             modelo.getVista().txtExpresion2.setText("");
@@ -163,6 +165,7 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
                 modelo.getVista().txtDivisor.setText("x!");
                 break;
             case 3:
+                modelo.getVista().txtDividendo.setVisible(true);
                 modelo.getVista().txtDivisor.setVisible(true);
                 modelo.getVista().txtExpresion2.setVisible(true);
                 modelo.getVista().txtTitulo.setText("Factorial caso n! / n = (n-1)!");
@@ -209,13 +212,14 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
     public boolean validarSiError(int n) {
         boolean error = true;
         if (n == 1) {
-            if (modelo.getVista().txtExpresion.getText().equals("")) {
+            if (modelo.getVista().txtExpresion.getText().equals("") || Integer.parseInt(modelo.getVista().txtExpresion.getText()) < 0) {
                 error = true;
             } else {
                 error = false;
             }
         } else {
-            if (modelo.getVista().txtExpresion.getText().equals("") || modelo.getVista().txtExpresion2.equals("")) {
+            if (modelo.getVista().txtExpresion.getText().equals("") || modelo.getVista().txtExpresion2.equals("")
+                    || Integer.parseInt(modelo.getVista().txtExpresion.getText()) < 0 || Integer.parseInt(modelo.getVista().txtExpresion2.getText()) < 0) {
                 error = true;
             } else {
                 error = false;
@@ -248,8 +252,16 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
         if (e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand()) && tipoFactorial > 5) {
             boolean flag = validarSiError(1);
             if (!flag) {
-                modelo.getVista().txtResultado.setText(procesarExpresion(modelo.getVista().txtExpresion.getText()));
+                try {
+                    modelo.getVista().txtResultado.setText(procesarExpresion(modelo.getVista().txtExpresion.getText()));
+                    modelo.getVista().txtObservaciones.setText("Operación realizada exitosamente");
+                } catch (NumberFormatException a) {
+                    mensajesWindow(3);
+                    limpiar(1);
+                }
             } else {
+                modelo.getVista().txtObservaciones.setText("Existen errores en los campos");
+                modelo.getVista().txtResultado.setText("");
                 mensajesWindow(1);
             }
 
@@ -259,6 +271,30 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
             if (!flag) {
                 try {
                     modelo.getVista().txtResultado.setText(String.valueOf(factorial(Integer.parseInt(modelo.getVista().txtExpresion.getText()))));
+                    modelo.getVista().txtObservaciones.setText("Operación realizada exitosamente");
+                } catch (NumberFormatException a) {
+                    mensajesWindow(3);
+                    limpiar(1);
+                }
+            } else {
+                modelo.getVista().txtObservaciones.setText("Existen errores en los campos");
+                modelo.getVista().txtResultado.setText("");
+                mensajesWindow(1);
+            }
+
+            //Verifica si está en orden para calcular factorial tipo x! = n!
+        } else if (e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand()) && tipoFactorial == 2) {
+            boolean flag = validarSiError(2);
+            if (!flag) {
+                try {
+                    long n = factorial(Integer.parseInt(modelo.getVista().txtExpresion.getText()));
+                    long x = factorial(Integer.parseInt(modelo.getVista().txtExpresion2.getText()));
+                    if (n == x) {
+                        modelo.getVista().txtObservaciones.setText("La condición SÍ se cumple");
+                    } else {
+                        modelo.getVista().txtObservaciones.setText("NO se cumple la condición.");
+                    }
+                    modelo.getVista().txtResultado.setText("n! = " + String.valueOf(n) + ", x! = " + String.valueOf(x));
                 } catch (NumberFormatException a) {
                     mensajesWindow(3);
                     limpiar(1);
@@ -267,60 +303,24 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
                 mensajesWindow(1);
             }
 
-            //Verifica si está en orden para calcular factorial tipo x! = n!
-        } else if (e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand()) && tipoFactorial == 2) {
-            boolean flag = validarSiError(2);
-            if (!flag) {
-                long n = factorial(Integer.parseInt(modelo.getVista().txtExpresion.getText()));
-                long x = factorial(Integer.parseInt(modelo.getVista().txtExpresion2.getText()));
-                String evaluacion = "";
-                if (n == x) {
-                    evaluacion = " por lo tanto" + modelo.getVista().txtExpresion.getText() + " y " + modelo.getVista().txtExpresion2.getText()
-                            + "son iguales. Se cumple la condición";
-                } else {
-                    evaluacion = " por lo tanto" + modelo.getVista().txtExpresion.getText() + " y " + modelo.getVista().txtExpresion2.getText()
-                            + "no son iguales. No se cumple la condición";
-                }
-                modelo.getVista().txtResultado.setText("n! = " + String.valueOf(n) + ", x! = " + String.valueOf(x)
-                        + evaluacion);
-            } else {
-                mensajesWindow(1);
-            }
-
-            
             //Verifica si está en orden para calcular factorial de tipo n!/n = (n-1)!
         } else if (e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand()) && tipoFactorial == 3) {
             boolean flag = validarSiError(2);
             if (!flag) {
-                long nFac = factorial(Integer.parseInt(modelo.getVista().txtExpresion.getText()));
-                long xFac = factorial(Integer.parseInt(modelo.getVista().txtExpresion.getText()));
-                long x = Integer.parseInt(modelo.getVista().txtExpresion2.getText());
-                long n = Integer.parseInt(modelo.getVista().txtExpresion.getText());
-                long resultado = nFac / x;
-                if (n == x) {
-                    modelo.getVista().txtResultado.setText(String.valueOf(resultado));
-                } else {
-                    modelo.getVista().txtResultado.setText(String.valueOf(resultado));
-                    modelo.getVista().txtObservaciones.setText("No se cumplió con la condición");
-                }
-            } else {
-                mensajesWindow(1);
-            }
-
-            
-            
-        } else if (e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand()) && tipoFactorial == 4) {
-
-            //Revisa y calcula si está todo en orden para N! = 0
-        } else if (e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand()) && tipoFactorial == 5) {
-            boolean flag = validarSiError(1);
-            if (!flag) {
                 try {
-                    long prueba = factorial(Integer.parseInt(modelo.getVista().txtExpresion.getText()));
-                    if (prueba != 1) {
-                        modelo.getVista().txtResultado.setText(modelo.getVista().txtExpresion.getText() + " es difernte de cero. La condición no se cumple");
+                    long nFac = factorial(Integer.parseInt(modelo.getVista().txtExpresion.getText()));
+                    long x = Integer.parseInt(modelo.getVista().txtExpresion2.getText());
+                    long n = Integer.parseInt(modelo.getVista().txtExpresion.getText());
+                    long nPr = n - 1;
+                    long xFac = factorial((int) nPr);
+                    long resultado = nFac / x;
+                    if (n == x) {
+                        modelo.getVista().txtResultado.setText(String.valueOf(resultado));
+                        modelo.getVista().txtObservaciones.setText("Condición cumplida, \nEl factorial de " + nPr + " osea (" + n + "-1) "
+                                + "es " + xFac);
                     } else {
-                        modelo.getVista().txtResultado.setText("Resultado = " + prueba + ". La condición si se cumple");
+                        modelo.getVista().txtResultado.setText(String.valueOf(resultado));
+                        modelo.getVista().txtObservaciones.setText("No se cumplió con la condición");
                     }
                 } catch (NumberFormatException a) {
                     mensajesWindow(3);
@@ -330,7 +330,57 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
                 mensajesWindow(1);
             }
 
-            //PARTE DE JAVIFA DEL REPORTE UWU
+            //Verifica si está en orden para factorial del caso n!/(n-1)! = n
+        } else if (e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand()) && tipoFactorial == 4) {
+            boolean flag = validarSiError(1);
+            if (!flag) {
+                try {
+                    long nFac = factorial(Integer.parseInt(modelo.getVista().txtExpresion.getText()));
+                    long x = Integer.parseInt(modelo.getVista().txtExpresion2.getText());
+                    long n = Integer.parseInt(modelo.getVista().txtExpresion.getText());
+                    long nPr = n - 1;
+                    long xFac = factorial((int) nPr);
+                    long resultado = nFac / xFac;
+                    System.out.println(x);
+                    System.out.println(n);
+                    if (x == (n - 1)) {
+                        modelo.getVista().txtResultado.setText(String.valueOf(resultado));
+                        modelo.getVista().txtObservaciones.setText("Condición cumplida");
+                    } else {
+                        modelo.getVista().txtResultado.setText(String.valueOf(resultado));
+                        modelo.getVista().txtObservaciones.setText("No se cumplió con la condición");
+                    }
+                } catch (NumberFormatException a) {
+                    mensajesWindow(3);
+                    limpiar(1);
+                }
+            } else {
+                mensajesWindow(1);
+            }
+
+            //Revisa y calcula si está todo en orden para N! = 0
+        } else if (e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand()) && tipoFactorial == 5) {
+            boolean flag = validarSiError(1);
+            if (!flag) {
+                try {
+                    long prueba = factorial(Integer.parseInt(modelo.getVista().txtExpresion.getText()));
+                    if (prueba != 1) {
+                        modelo.getVista().txtResultado.setText(String.valueOf(prueba));
+                        modelo.getVista().txtObservaciones.setText("La condición NO se cumple, \n"
+                                + modelo.getVista().txtExpresion.getText() + " es diferente de cero.");
+                    } else {
+                        modelo.getVista().txtResultado.setText(String.valueOf(prueba));
+                        modelo.getVista().txtObservaciones.setText("La condición SÍ se cumple");
+                    }
+                } catch (NumberFormatException a) {
+                    mensajesWindow(3);
+                    limpiar(1);
+                }
+            } else {
+                mensajesWindow(1);
+            }
+
+            //Reporte
         } else if (e.getActionCommand().equals(modelo.getVista().btnGenerarPDF.getActionCommand())) {
             if (modelo.getVista().txtResultado.getText().equals("")) {
                 mensajesWindow(2);
