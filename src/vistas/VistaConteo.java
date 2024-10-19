@@ -285,7 +285,7 @@ public class VistaConteo extends javax.swing.JFrame {
             String carpetaDescargas = System.getProperty("user.home") + File.separator + "Downloads";
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HHmmss");
             String timestamp = formatter.format(new Date());
-            String nombreArchivo = carpetaDescargas + File.separator + "semidios_" + timestamp + ".pdf";
+            String nombreArchivo = carpetaDescargas + File.separator + "EjercicioConteo" + timestamp + ".pdf";
 
             // Imprime la ruta del archivo para verificar
             System.out.println("Ruta del archivo PDF: " + nombreArchivo);
@@ -324,8 +324,8 @@ public class VistaConteo extends javax.swing.JFrame {
 
                 documento.add(new Paragraph(" "));
 
-                documento.add(new Paragraph("descrpicion del problema" + VistaAnalisis.descripcion));
-                documento.add(new Paragraph("Sustitucion de formula : n x m = "));
+                documento.add(new Paragraph("descrpicion del problema : " + VistaAnalisis.descripcion));
+                documento.add(new Paragraph("Formula utilizada : n x m "));
                 StringBuilder procedimiento = new StringBuilder("Procedimiento del problema: ");
                 for (JTextField campo : listaCampos) {
                     String textoCampo = campo.getText();

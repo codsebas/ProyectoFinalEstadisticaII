@@ -435,27 +435,28 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
                         documento.add(new Paragraph("Has seleccionado: n! = n · (n-1)!"));
                         documento.add(new Paragraph("Sustitucion de formula : " + "n = " + modelo.getVista().txtExpresion.getText()));
                         documento.add(new Paragraph("Resultado de la operaacion : " + " (n-1)! = " + "(" + modelo.getVista().txtExpresion.getText() + "-1)! = " + modelo.getVista().txtResultado.getText()));
+                        
                         break;
 
                     case 1: // Opción b
                         documento.add(new Paragraph("Has seleccionado: x! = n! → x = n"));
                         documento.add(new Paragraph(" Sustitucion formula : n! = " + modelo.getVista().txtExpresion.getText() + "  x! = " + modelo.getVista().txtExpresion2.getText()));
-                        documento.add(new Paragraph("Resultado de la operacion : !x = !n   x = n      " + modelo.getVista().txtResultado.getText()));
+                        documento.add(new Paragraph("Resultado de la operacion : x = n    " + modelo.getVista().txtResultado.getText()));
                         break;
                     case 2: // Opción c
                         documento.add(new Paragraph("Has seleccionado: n! / n = (n-1)!"));
                         documento.add(new Paragraph("sustitucion formula : n = " + modelo.getVista().txtExpresion.getText()));
-                        documento.add(new Paragraph(" Resultado de la operacion : (n-1!) = " + "(" + modelo.getVista().txtExpresion.getText() + "-1)!" + modelo.getVista().txtResultado.getText()));
+                        documento.add(new Paragraph(" Resultado de la operacion : (n-1!) = " + "(" + modelo.getVista().txtExpresion.getText() + "-1)! = " + modelo.getVista().txtResultado.getText()));
                         break;
                     case 3: // Opción d
                         documento.add(new Paragraph("Has seleccionado: n! / (n-1)! = n"));
                         documento.add(new Paragraph("sustitucion formula : n = " + modelo.getVista().txtExpresion.getText()));
-                        documento.add(new Paragraph(" Resultado de la operacion :n! / (n-1)! = n     " + modelo.getVista().txtResultado.getText()));
+                        documento.add(new Paragraph(" Resultado de la operacion : " + modelo.getVista().txtExpresion.getText()+"! / ("+modelo.getVista().txtExpresion.getText()+"-1) ="+modelo.getVista().txtResultado.getText()));
                         break;
                     case 4: // Opción e
                         documento.add(new Paragraph("Has seleccionado: 0! = 1"));
                         documento.add(new Paragraph(" Sustitucion formula : " + modelo.getVista().txtExpresion.getText()));
-                        documento.add(new Paragraph("Resultado de la operacion : "));
+                        documento.add(new Paragraph("Resultado de la operacion : " +modelo.getVista().txtResultado.getText()));
 
                         break;
                     case 5: // formato libre
@@ -467,6 +468,7 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
                         documento.add(new Paragraph("No se ha seleccionado ninguna opción válida."));
                         break;
                 }
+                documento.add(new Paragraph ("Observacion : "+modelo.getVista().txtObservaciones.getText()));
                 JOptionPane.showMessageDialog(null, "Guardado en: " + nombreArchivo, "Reporte generado exitosamente", JOptionPane.INFORMATION_MESSAGE);
 
                 documento.close();
