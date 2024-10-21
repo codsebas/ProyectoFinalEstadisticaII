@@ -4,6 +4,8 @@
  */
 package vistas;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author sebas
@@ -14,11 +16,12 @@ public class VistaAnalisis extends javax.swing.JFrame {
      * Creates new form VistaAnalisis
      */
     public static String descripcion;
+
     public VistaAnalisis() {
         initComponents();
         setTitle("Analisis");
         setLocationRelativeTo(null);
-        
+
     }
 
     /**
@@ -162,10 +165,14 @@ public class VistaAnalisis extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResolverActionPerformed
-        this.setVisible(false);
-        Inicio inicio = new Inicio();
-        inicio.setVisible(true);    
-        VistaAnalisis.descripcion = txtDescripcion.getText();
+        if (txtDescripcion.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "El campo está en blanco, no se puede continuar", "Error", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            this.setVisible(false);
+            Inicio inicio = new Inicio();
+            inicio.setVisible(true);
+            VistaAnalisis.descripcion = txtDescripcion.getText();
+        }
     }//GEN-LAST:event_btnResolverActionPerformed
     public static String getDescripcionTexto() {
         return txtDescripcion.getText();

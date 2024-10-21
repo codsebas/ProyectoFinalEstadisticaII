@@ -5,19 +5,17 @@ import com.lowagie.text.Element;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 import modelos.ModeloFactorial;
@@ -25,13 +23,23 @@ import vistas.Inicio;
 import vistas.VistaAnalisis;
 import vistas.VistaFactorial;
 
-public class Factoriales implements ActionListener, WindowListener, FocusListener {
+public class Factoriales implements ActionListener, WindowListener, KeyListener {
 
     ModeloFactorial modelo;
     public static int tipoFactorial;
 
+    private void inicializar() {
+        modelo.getVista().txtExpresion.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                Factoriales.this.keyTyped(e);
+            }
+        });
+    }
+
     public Factoriales(ModeloFactorial modelo) {
         this.modelo = modelo;
+        inicializar();
     }
 
     public static long factorial(int numero) {
@@ -46,33 +54,6 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
             mensajesWindow(3);
             return 0;
         }
-    }
-
-    //Formato libre 
-    public static String procesarExpresion(String expresion) {
-        Pattern p = Pattern.compile("(\\d+)!");
-        Matcher m = p.matcher(expresion);
-
-        while (m.find()) {
-            int numero = Integer.parseInt(m.group(1));
-            long resultadoFactorial = factorial(numero);
-            expresion = expresion.replace(m.group(0), Long.toString(resultadoFactorial));
-        }
-
-        try {
-            return evalExpression(expresion);
-        } catch (Exception e) {
-            mensajesWindow(3);
-            return "";
-        }
-    }
-
-    public static String evalExpression(String expresion) throws Exception {
-        javax.script.ScriptEngineManager manager = new javax.script.ScriptEngineManager();
-        javax.script.ScriptEngine engine = manager.getEngineByName("JavaScript");
-
-        Object resultado = engine.eval(expresion);
-        return resultado.toString();
     }
 
     public int Opcion() {
@@ -116,15 +97,12 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
                 correlativo = 5; // Opción e
                 break;
             case 5:
-                modelo.getVista().wdwMensaje.setVisible(false);
-                modelo.getVista().setVisible(false);
+                this.modelo.getVista().setVisible(false);
                 Inicio vistaInicio = new Inicio();
                 vistaInicio.setVisible(true);
-                correlativo = 6;
                 break;
             default:
-                correlativo = 6;
-                break;
+                correlativo = 1;
         }
         return correlativo;
     }
@@ -168,6 +146,7 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
                 modelo.getVista().txtDividendo.setVisible(true);
                 modelo.getVista().txtDivisor.setVisible(true);
                 modelo.getVista().txtExpresion2.setVisible(true);
+                modelo.getVista().txtExpresion2.setEditable(false);
                 modelo.getVista().txtTitulo.setText("Factorial caso n! / n = (n-1)!");
                 modelo.getVista().txtDividendo.setText("n!");
                 modelo.getVista().txtDivisor.setText("n");
@@ -176,6 +155,7 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
                 modelo.getVista().txtDivisor.setVisible(true);
                 modelo.getVista().txtDividendo.setVisible(true);
                 modelo.getVista().txtExpresion2.setVisible(true);
+                modelo.getVista().txtExpresion2.setEditable(false);
                 modelo.getVista().txtTitulo.setText("Factorial caso n! / (n-1)! = n");
                 modelo.getVista().txtDividendo.setText("n!");
                 modelo.getVista().txtDivisor.setText("(n-1)!");
@@ -187,11 +167,12 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
                 modelo.getVista().txtTitulo.setText("Factorial caso 0! = 1");
                 break;
             default:
-                modelo.getVista().txtTitulo.setText("Factorial con formato libre");
                 modelo.getVista().txtDivisor.setVisible(false);
                 modelo.getVista().txtDividendo.setVisible(false);
                 modelo.getVista().txtExpresion2.setVisible(false);
+                modelo.getVista().txtTitulo.setText("Factorial caso n!");
                 break;
+
         }
     }
 
@@ -228,6 +209,12 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
         return error;
     }
 
+    public void regresar() {
+        this.modelo.getVista().setVisible(false);
+        Inicio inicio = new Inicio();
+        inicio.setVisible(true);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -246,27 +233,12 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
         } else if (e.getActionCommand().equals(modelo.getVista().btnCambiar.getActionCommand())) {
             limpiar(1);
             cambiarCalculo();
+        } else if (e.getActionCommand().equals(modelo.getVista().btnRegresar.getActionCommand())) {
+            regresar();
         }
 
-        //Verifica si está todo en orden para calcular factorial formato LIBRE
-        if (e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand()) && tipoFactorial > 5) {
-            boolean flag = validarSiError(1);
-            if (!flag) {
-                try {
-                    modelo.getVista().txtResultado.setText(procesarExpresion(modelo.getVista().txtExpresion.getText()));
-                    modelo.getVista().txtObservaciones.setText("Operación realizada exitosamente");
-                } catch (NumberFormatException a) {
-                    mensajesWindow(3);
-                    limpiar(1);
-                }
-            } else {
-                modelo.getVista().txtObservaciones.setText("Existen errores en los campos");
-                modelo.getVista().txtResultado.setText("");
-                mensajesWindow(1);
-            }
-
-            //Verifica si está todo en orden para calcular factorial tipo SIMPLE
-        } else if (e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand()) && tipoFactorial == 1) {
+        //Verifica si está todo en orden para calcular factorial tipo SIMPLE
+        if (e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand()) && tipoFactorial == 1) {
             boolean flag = validarSiError(1);
             if (!flag) {
                 try {
@@ -431,11 +403,9 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
 
                 switch (opcionSeleccionada) {
                     case 0: // Opción a
-
                         documento.add(new Paragraph("Has seleccionado: n! = n · (n-1)!"));
                         documento.add(new Paragraph("Sustitucion de formula : " + "n = " + modelo.getVista().txtExpresion.getText()));
                         documento.add(new Paragraph("Resultado de la operaacion : " + " (n-1)! = " + "(" + modelo.getVista().txtExpresion.getText() + "-1)! = " + modelo.getVista().txtResultado.getText()));
-                        
                         break;
 
                     case 1: // Opción b
@@ -451,24 +421,20 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
                     case 3: // Opción d
                         documento.add(new Paragraph("Has seleccionado: n! / (n-1)! = n"));
                         documento.add(new Paragraph("sustitucion formula : n = " + modelo.getVista().txtExpresion.getText()));
-                        documento.add(new Paragraph(" Resultado de la operacion : " + modelo.getVista().txtExpresion.getText()+"! / ("+modelo.getVista().txtExpresion.getText()+"-1) ="+modelo.getVista().txtResultado.getText()));
+                        documento.add(new Paragraph(" Resultado de la operacion : " + modelo.getVista().txtExpresion.getText() + "! / (" + modelo.getVista().txtExpresion.getText() + "-1) =" + modelo.getVista().txtResultado.getText()));
                         break;
                     case 4: // Opción e
                         documento.add(new Paragraph("Has seleccionado: 0! = 1"));
                         documento.add(new Paragraph(" Sustitucion formula : " + modelo.getVista().txtExpresion.getText()));
-                        documento.add(new Paragraph("Resultado de la operacion : " +modelo.getVista().txtResultado.getText()));
-
-                        break;
-                    case 5: // formato libre
-                        documento.add(new Paragraph("Has seleccionado el formato libre "));
-                        documento.add(new Paragraph("Sustitucion factorial : " + modelo.getVista().txtExpresion.getText()));
-                        documento.add(new Paragraph("Resultado de la operacion : " + modelo.getVista().txtExpresion.getText()));
+                        documento.add(new Paragraph("Resultado de la operacion : " + modelo.getVista().txtResultado.getText()));
                         break;
                     default:
-                        documento.add(new Paragraph("No se ha seleccionado ninguna opción válida."));
+                        documento.add(new Paragraph("Has seleccionado: n! = n · (n-1)!"));
+                        documento.add(new Paragraph("Sustitucion de formula : " + "n = " + modelo.getVista().txtExpresion.getText()));
+                        documento.add(new Paragraph("Resultado de la operaacion : " + " (n-1)! = " + "(" + modelo.getVista().txtExpresion.getText() + "-1)! = " + modelo.getVista().txtResultado.getText()));
                         break;
                 }
-                documento.add(new Paragraph ("Observacion : "+modelo.getVista().txtObservaciones.getText()));
+                documento.add(new Paragraph("Observacion : " + modelo.getVista().txtObservaciones.getText()));
                 JOptionPane.showMessageDialog(null, "Guardado en: " + nombreArchivo, "Reporte generado exitosamente", JOptionPane.INFORMATION_MESSAGE);
 
                 documento.close();
@@ -489,10 +455,10 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
 
     @Override
     public void windowClosing(WindowEvent e) {
-        modelo.getVista().wdwMensaje.dispose();
-        modelo.getVista().dispose();
-        Inicio vistaInicio = new Inicio();
-        vistaInicio.setVisible(true);
+//        modelo.getVista().wdwMensaje.dispose();
+//        modelo.getVista().dispose();
+//        Inicio vistaInicio = new Inicio();
+//        vistaInicio.setVisible(true);
     }
 
     @Override
@@ -517,13 +483,64 @@ public class Factoriales implements ActionListener, WindowListener, FocusListene
     }
 
     @Override
-    public void focusGained(FocusEvent e) {
-        if (e.getComponent().equals(modelo.getVista().txtExpresion)) {
+    public void keyTyped(KeyEvent e) {
 
+        if (tipoFactorial == 4) {
+            Object source = e.getSource();
+            if (source == modelo.getVista().txtExpresion) {
+                char c = e.getKeyChar();
+                if (!Character.isDigit(c)) {
+                    e.consume();
+                } else {
+                    String textoActual = modelo.getVista().txtExpresion.getText() + c;
+                    try {
+                        int asigNum = Integer.parseInt(textoActual) - 1;
+                        modelo.getVista().txtExpresion2.setText(String.valueOf(asigNum));
+                    } catch (NumberFormatException ex) {
+                        modelo.getVista().txtExpresion2.setText("Error");
+                    }
+                }
+            }
+        } else if (tipoFactorial == 3) {
+            Object source = e.getSource();
+            if (source == modelo.getVista().txtExpresion) {
+                char c = e.getKeyChar();
+                if (!Character.isDigit(c)) {
+                    e.consume();
+                } else {
+                    String textoActual = modelo.getVista().txtExpresion.getText() + c;
+                    try {
+                        int asigNum = Integer.parseInt(textoActual);
+                        modelo.getVista().txtExpresion2.setText(String.valueOf(asigNum));
+                    } catch (NumberFormatException ex) {
+                        modelo.getVista().txtExpresion2.setText("Error");
+                    }
+                }
+            }
+        } else if (tipoFactorial == 5) {
+            Object source = e.getSource();
+            if (source == modelo.getVista().txtExpresion) {
+                char c = e.getKeyChar();
+                if (c != '0') {
+                    e.consume();
+                }
+            }
+        } else {
+            Object source = e.getSource();
+            if (source == modelo.getVista().txtExpresion || source == modelo.getVista().txtExpresion2) {
+                char c = e.getKeyChar();
+                if (!Character.isDigit(c)) {
+                    e.consume();
+                }
+            }
         }
     }
 
     @Override
-    public void focusLost(FocusEvent e) {
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
     }
 }

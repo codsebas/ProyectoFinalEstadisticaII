@@ -103,6 +103,11 @@ public class VistaFactorial extends javax.swing.JFrame {
                 txtExpresionFocusGained(evt);
             }
         });
+        txtExpresion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtExpresionKeyTyped(evt);
+            }
+        });
 
         txtResultado.setEditable(false);
         txtResultado.setColumns(20);
@@ -119,6 +124,12 @@ public class VistaFactorial extends javax.swing.JFrame {
         btnCalcular.setText("calcular");
 
         btnLimpiar.setText("Limpiar");
+
+        txtExpresion2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtExpresion2KeyTyped(evt);
+            }
+        });
 
         txtDivisor.setText("Divisor:");
 
@@ -237,6 +248,17 @@ public class VistaFactorial extends javax.swing.JFrame {
     private void btnAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAyudaActionPerformed
+
+    private void txtExpresionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtExpresionKeyTyped
+     
+    }//GEN-LAST:event_txtExpresionKeyTyped
+
+    private void txtExpresion2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtExpresion2KeyTyped
+        char c = evt.getKeyChar();
+        if(!Character.isDigit(c)){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtExpresion2KeyTyped
 
     /**
      * @param args the command line arguments
