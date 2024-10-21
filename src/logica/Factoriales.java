@@ -14,9 +14,11 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import modelos.ModeloFactorial;
 import vistas.Inicio;
@@ -35,6 +37,38 @@ public class Factoriales implements ActionListener, WindowListener, KeyListener 
                 Factoriales.this.keyTyped(e);
             }
         });
+        modelo.getVista().txtExpresion.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (tipoFactorial == 4) {
+                    String currentText = modelo.getVista().txtExpresion.getText();
+                    try {
+                        if (!currentText.isEmpty()) {
+                            int asigNum = Integer.parseInt(currentText) - 1;
+                            modelo.getVista().txtExpresion2.setText(String.valueOf(asigNum));
+                        } else {
+                            modelo.getVista().txtExpresion2.setText("");
+                        }
+                    } catch (NumberFormatException ex) {
+                        System.out.println(ex.getMessage());
+                        modelo.getVista().txtExpresion2.setText("");
+                    }
+                } else if (tipoFactorial == 3) {
+                    String currentText = modelo.getVista().txtExpresion.getText();
+                    try {
+                        if (!currentText.isEmpty()) {
+                            int asigNum = Integer.parseInt(currentText);
+                            modelo.getVista().txtExpresion2.setText(String.valueOf(asigNum));
+                        } else {
+                            modelo.getVista().txtExpresion2.setText("");
+                        }
+                    } catch (NumberFormatException ex) {
+                        System.out.println(ex.getMessage());
+                        modelo.getVista().txtExpresion2.setText("");
+                    }
+                }
+            }
+        });
     }
 
     public Factoriales(ModeloFactorial modelo) {
@@ -42,7 +76,7 @@ public class Factoriales implements ActionListener, WindowListener, KeyListener 
         inicializar();
     }
 
-    public static long factorial(int numero) {
+    public static int factorial(int numero) {
         try {
 
             if (numero <= 1) {
@@ -53,6 +87,25 @@ public class Factoriales implements ActionListener, WindowListener, KeyListener 
         } catch (Exception e) {
             mensajesWindow(3);
             return 0;
+        }
+    }
+
+    public static BigInteger factorialBig(int numero) {
+        try {
+            if (numero < 0) {
+                throw new IllegalArgumentException("El número debe ser no negativo.");
+            } else if (numero == 0 || numero == 1) {
+                return BigInteger.ONE; // 0! y 1! son 1
+            } else {
+                BigInteger resultado = BigInteger.ONE;
+                for (int i = 2; i <= numero; i++) {
+                    resultado = resultado.multiply(BigInteger.valueOf(i));
+                }
+                return resultado;
+            }
+        } catch (Exception e) {
+            mensajesWindow(3); // Llamada a tu método para mostrar mensajes
+            return BigInteger.ZERO; // Retornar BigInteger.ZERO en caso de error
         }
     }
 
@@ -242,8 +295,9 @@ public class Factoriales implements ActionListener, WindowListener, KeyListener 
             boolean flag = validarSiError(1);
             if (!flag) {
                 try {
-                    modelo.getVista().txtResultado.setText(String.valueOf(factorial(Integer.parseInt(modelo.getVista().txtExpresion.getText()))));
+                    modelo.getVista().txtResultado.setText(String.valueOf(factorialBig(Integer.parseInt(modelo.getVista().txtExpresion.getText()))));
                     modelo.getVista().txtObservaciones.setText("Operación realizada exitosamente");
+
                 } catch (NumberFormatException a) {
                     mensajesWindow(3);
                     limpiar(1);
@@ -259,14 +313,29 @@ public class Factoriales implements ActionListener, WindowListener, KeyListener 
             boolean flag = validarSiError(2);
             if (!flag) {
                 try {
-                    long n = factorial(Integer.parseInt(modelo.getVista().txtExpresion.getText()));
-                    long x = factorial(Integer.parseInt(modelo.getVista().txtExpresion2.getText()));
-                    if (n == x) {
-                        modelo.getVista().txtObservaciones.setText("La condición SÍ se cumple");
+                    int expresion = Integer.parseInt(modelo.getVista().txtExpresion.getText());
+                    int expresion2 = Integer.parseInt(modelo.getVista().txtExpresion2.getText());
+                    if (expresion <= 30 || expresion2 <= 30) {
+                        BigInteger Fn = factorialBig(Integer.parseInt(modelo.getVista().txtExpresion.getText()));
+                        BigInteger Fx = factorialBig(Integer.parseInt(modelo.getVista().txtExpresion2.getText()));
+                        int n = Integer.parseInt(modelo.getVista().txtExpresion.getText());
+                        int x = Integer.parseInt(modelo.getVista().txtExpresion2.getText());
+                        if (n == x) {
+                            modelo.getVista().txtObservaciones.setText("La condición SÍ se cumple");
+                        } else {
+                            modelo.getVista().txtObservaciones.setText("NO se cumple la condición.");
+                        }
+                        modelo.getVista().txtResultado.setText("n! = " + String.valueOf(Fn) + ",\nx! = " + String.valueOf(Fx));
                     } else {
-                        modelo.getVista().txtObservaciones.setText("NO se cumple la condición.");
+                        BigInteger n = factorialBig(Integer.parseInt(modelo.getVista().txtExpresion.getText()));
+                        BigInteger x = factorialBig(Integer.parseInt(modelo.getVista().txtExpresion2.getText()));
+                        if (n == x) {
+                            modelo.getVista().txtObservaciones.setText("La condición SÍ se cumple");
+                        } else {
+                            modelo.getVista().txtObservaciones.setText("NO se cumple la condición.");
+                        }
+                        modelo.getVista().txtResultado.setText("n! = " + String.valueOf(n) + ",\nx! = " + String.valueOf(x));
                     }
-                    modelo.getVista().txtResultado.setText("n! = " + String.valueOf(n) + ", x! = " + String.valueOf(x));
                 } catch (NumberFormatException a) {
                     mensajesWindow(3);
                     limpiar(1);
@@ -280,19 +349,19 @@ public class Factoriales implements ActionListener, WindowListener, KeyListener 
             boolean flag = validarSiError(2);
             if (!flag) {
                 try {
-                    long nFac = factorial(Integer.parseInt(modelo.getVista().txtExpresion.getText()));
-                    long x = Integer.parseInt(modelo.getVista().txtExpresion2.getText());
-                    long n = Integer.parseInt(modelo.getVista().txtExpresion.getText());
-                    long nPr = n - 1;
-                    long xFac = factorial((int) nPr);
-                    long resultado = nFac / x;
-                    if (n == x) {
-                        modelo.getVista().txtResultado.setText(String.valueOf(resultado));
-                        modelo.getVista().txtObservaciones.setText("Condición cumplida, \nEl factorial de " + nPr + " osea (" + n + "-1) "
-                                + "es " + xFac);
+                    int n = Integer.parseInt(modelo.getVista().txtExpresion.getText());
+                    int x = Integer.parseInt(modelo.getVista().txtExpresion2.getText());
+                    BigInteger nB = new BigInteger(modelo.getVista().txtExpresion.getText());
+                    BigInteger nF = factorialBig(n);
+                    BigInteger prueba = nF.divide(nB);
+                    if (n <= 30) {
+                        modelo.getVista().txtResultado.setText(String.valueOf(prueba));
+                        modelo.getVista().txtObservaciones.setText("Condición cumplida, \nEl factorial de " + (x-1)  + " (" + n + "-1) "
+                                + "es " + prueba);
                     } else {
-                        modelo.getVista().txtResultado.setText(String.valueOf(resultado));
-                        modelo.getVista().txtObservaciones.setText("No se cumplió con la condición");
+                        modelo.getVista().txtResultado.setText(String.valueOf(prueba));
+                        modelo.getVista().txtObservaciones.setText("Condición cumplida, \nEl factorial de " + (x-1) + " (" + n + "-1) "
+                                + "es demasiado grande para mostrarlo");
                     }
                 } catch (NumberFormatException a) {
                     mensajesWindow(3);
@@ -307,19 +376,23 @@ public class Factoriales implements ActionListener, WindowListener, KeyListener 
             boolean flag = validarSiError(1);
             if (!flag) {
                 try {
-                    long nFac = factorial(Integer.parseInt(modelo.getVista().txtExpresion.getText()));
-                    long x = Integer.parseInt(modelo.getVista().txtExpresion2.getText());
-                    long n = Integer.parseInt(modelo.getVista().txtExpresion.getText());
-                    long nPr = n - 1;
-                    long xFac = factorial((int) nPr);
-                    long resultado = nFac / xFac;
-                    System.out.println(x);
-                    System.out.println(n);
+                    int x = Integer.parseInt(modelo.getVista().txtExpresion2.getText());
+                    int n = Integer.parseInt(modelo.getVista().txtExpresion.getText());
+                    BigInteger cX = factorialBig(x);
+                    BigInteger cN = factorialBig(n);
+                    BigInteger prueba = cN.divide(cX);
                     if (x == (n - 1)) {
-                        modelo.getVista().txtResultado.setText(String.valueOf(resultado));
+                        modelo.getVista().txtResultado.setText(String.valueOf(prueba));
                         modelo.getVista().txtObservaciones.setText("Condición cumplida");
                     } else {
-                        modelo.getVista().txtResultado.setText(String.valueOf(resultado));
+                        modelo.getVista().txtResultado.setText(String.valueOf(prueba));
+                        modelo.getVista().txtObservaciones.setText("No se cumplió con la condición");
+                    }
+                    if (x == (n - 1)) {
+                        modelo.getVista().txtResultado.setText(String.valueOf(prueba));
+                        modelo.getVista().txtObservaciones.setText("Condición cumplida");
+                    } else {
+                        modelo.getVista().txtResultado.setText(String.valueOf(prueba));
                         modelo.getVista().txtObservaciones.setText("No se cumplió con la condición");
                     }
                 } catch (NumberFormatException a) {
@@ -455,10 +528,6 @@ public class Factoriales implements ActionListener, WindowListener, KeyListener 
 
     @Override
     public void windowClosing(WindowEvent e) {
-//        modelo.getVista().wdwMensaje.dispose();
-//        modelo.getVista().dispose();
-//        Inicio vistaInicio = new Inicio();
-//        vistaInicio.setVisible(true);
     }
 
     @Override
@@ -488,32 +557,44 @@ public class Factoriales implements ActionListener, WindowListener, KeyListener 
         if (tipoFactorial == 4) {
             Object source = e.getSource();
             if (source == modelo.getVista().txtExpresion) {
+                modelo.getVista().txtExpresion2.setText("");
                 char c = e.getKeyChar();
                 if (!Character.isDigit(c)) {
                     e.consume();
                 } else {
-                    String textoActual = modelo.getVista().txtExpresion.getText() + c;
+                    e.consume();
+                    JTextField textField = (JTextField) source;
+                    int caretPosition = textField.getCaretPosition();
+                    String currentText = textField.getText();
+                    String newText = currentText.substring(0, caretPosition) + c + currentText.substring(caretPosition);
+                    textField.setText(newText);
                     try {
-                        int asigNum = Integer.parseInt(textoActual) - 1;
+                        int asigNum = Integer.parseInt(newText) - 1;
                         modelo.getVista().txtExpresion2.setText(String.valueOf(asigNum));
                     } catch (NumberFormatException ex) {
-                        modelo.getVista().txtExpresion2.setText("Error");
+                        System.out.println(ex.getMessage());
                     }
                 }
             }
         } else if (tipoFactorial == 3) {
             Object source = e.getSource();
             if (source == modelo.getVista().txtExpresion) {
+                modelo.getVista().txtExpresion2.setText("");
                 char c = e.getKeyChar();
                 if (!Character.isDigit(c)) {
                     e.consume();
                 } else {
-                    String textoActual = modelo.getVista().txtExpresion.getText() + c;
+                    e.consume();
+                    JTextField textField = (JTextField) source;
+                    int caretPosition = textField.getCaretPosition();
+                    String currentText = textField.getText();
+                    String newText = currentText.substring(0, caretPosition) + c + currentText.substring(caretPosition);
+                    textField.setText(newText);
                     try {
-                        int asigNum = Integer.parseInt(textoActual);
+                        int asigNum = Integer.parseInt(newText);
                         modelo.getVista().txtExpresion2.setText(String.valueOf(asigNum));
                     } catch (NumberFormatException ex) {
-                        modelo.getVista().txtExpresion2.setText("Error");
+                        System.out.println(ex.getMessage());
                     }
                 }
             }
