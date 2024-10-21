@@ -348,7 +348,7 @@ public class Factoriales implements ActionListener, WindowListener, KeyListener 
         } else if (e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand()) && tipoFactorial == 3) {
             boolean flag = validarSiError(2);
             if (!flag) {
-                try {
+                try {   
                     int n = Integer.parseInt(modelo.getVista().txtExpresion.getText());
                     int x = Integer.parseInt(modelo.getVista().txtExpresion2.getText());
                     BigInteger nB = new BigInteger(modelo.getVista().txtExpresion.getText());
