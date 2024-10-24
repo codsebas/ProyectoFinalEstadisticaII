@@ -324,7 +324,7 @@ public class VistaConteo extends javax.swing.JFrame {
 
                 documento.add(new Paragraph(" "));
 
-                documento.add(new Paragraph("descrpicion del problema : " + VistaAnalisis.descripcion));
+                documento.add(new Paragraph("descrpición del problema : " + VistaAnalisis.descripcion));
                 documento.add(new Paragraph("Formula utilizada : n x m "));
                 StringBuilder procedimiento = new StringBuilder("Procedimiento del problema: ");
                 for (JTextField campo : listaCampos) {
