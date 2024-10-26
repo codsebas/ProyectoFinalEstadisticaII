@@ -150,12 +150,12 @@ public class Factoriales implements ActionListener, WindowListener, KeyListener 
                 correlativo = 5; // Opción e
                 break;
             case 5:
-                this.modelo.getVista().setVisible(false);
-                Inicio vistaInicio = new Inicio();
-                vistaInicio.setVisible(true);
+                System.exit(0); // Salir del programa
                 break;
             default:
-                correlativo = 1;
+                System.exit(0); // Cerrar todo en caso de selección predeterminada
+                break;
+
         }
         return correlativo;
     }
@@ -348,7 +348,7 @@ public class Factoriales implements ActionListener, WindowListener, KeyListener 
         } else if (e.getActionCommand().equals(modelo.getVista().btnCalcular.getActionCommand()) && tipoFactorial == 3) {
             boolean flag = validarSiError(2);
             if (!flag) {
-                try {   
+                try {
                     int n = Integer.parseInt(modelo.getVista().txtExpresion.getText());
                     int x = Integer.parseInt(modelo.getVista().txtExpresion2.getText());
                     BigInteger nB = new BigInteger(modelo.getVista().txtExpresion.getText());
@@ -356,11 +356,11 @@ public class Factoriales implements ActionListener, WindowListener, KeyListener 
                     BigInteger prueba = nF.divide(nB);
                     if (n <= 30) {
                         modelo.getVista().txtResultado.setText(String.valueOf(prueba));
-                        modelo.getVista().txtObservaciones.setText("Condición cumplida, \nEl factorial de " + (x-1)  + " (" + n + "-1) "
+                        modelo.getVista().txtObservaciones.setText("Condición cumplida, \nEl factorial de " + (x - 1) + " (" + n + "-1) "
                                 + "es " + prueba);
                     } else {
                         modelo.getVista().txtResultado.setText(String.valueOf(prueba));
-                        modelo.getVista().txtObservaciones.setText("Condición cumplida, \nEl factorial de " + (x-1) + " (" + n + "-1) "
+                        modelo.getVista().txtObservaciones.setText("Condición cumplida, \nEl factorial de " + (x - 1) + " (" + n + "-1) "
                                 + "es demasiado grande para mostrarlo");
                     }
                 } catch (NumberFormatException a) {
